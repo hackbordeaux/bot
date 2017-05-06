@@ -56,5 +56,6 @@ private:
 	bool m_run = true;
 	irc_session_t *m_irc_session = nullptr;
 	static std::string s_bot_name;
+	static IRCThread *that;
 };
 

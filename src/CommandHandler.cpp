@@ -149,10 +149,10 @@ ChatCommandSearchResult CommandHandler::find_command(ChatCommand *table, const c
 bool CommandHandler::handle_command_list(const std::string &args, std::string &msg)
 {
 	ChatCommand *cmds = getCommandTable();
-	msg += "Command list : \n";
+	msg += "Command list : ";
 
 	for (int32_t i = 0; cmds[i].name != nullptr; i++) {
-		msg += std::string(cmds[i].name) + "\n";
+		msg += std::string(cmds[i].name) + ", ";
 	}
 	return true;
 }

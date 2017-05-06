@@ -26,20 +26,23 @@
 #include <cstring>
 #include <thread>
 #include "IRCThread.h"
+#include "CommandHandler.h"
 
 
 std::string IRCThread::s_bot_name = "mybot_new";
 irc_info_session IRCThread::s_iis = irc_info_session("server", "nick");
+IRCThread *IRCThread::that = nullptr;
 
 IRCThread::IRCThread(const std::string channel, const std::string nick)
 {
 	s_iis.channel = channel;
 	s_iis.nick = nick;
+	that = this;
 }
 
 IRCThread::~IRCThread()
 {
-	delete m_irc_session;
+	delete that;
 }
 void IRCThread::run(const char *server, unsigned short port)
 {
@@ -119,6 +122,8 @@ void IRCThread::event_join(irc_session_t *session, const char *event, const char
 	}
 
 	std::cout << "Join channel" << std::endl;
+	const std::string msg = "Salut " + s_iis.channel + " ! Vous allez bien ? ";
+	irc_cmd_msg(session, s_iis.channel.c_str(), msg.c_str());
 }
 
 void IRCThread::event_channel(irc_session_t *session, const char *event, const char *origin,
@@ -133,16 +138,20 @@ void IRCThread::event_channel(irc_session_t *session, const char *event, const c
 		return;
 	}
 
-	std::cout << "Event channel : " << params[1] << std::endl;
+	std::cout << "Event channel : " << params[0] << " : " << params[1] << std::endl;
 
 	if (params[1][0] == ':') {
+		CommandHandler *command_handler = new CommandHandler(that);
+		std::string msg = "";
+		bool res = command_handler->handle_command(params[1], msg);
 
+		that->add_text(msg);
 	}
 }
 
 void IRCThread::add_text(const std::string &text)
 {
-
+	irc_cmd_msg(m_irc_session, s_iis.channel.c_str(), text.c_str());
 }
 
 void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,
