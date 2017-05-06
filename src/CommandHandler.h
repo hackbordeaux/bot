@@ -24,38 +24,40 @@
  */
 
 #pragma once
-
-#include <libircclient.h>
-#include <libirc_events.h>
 #include <iostream>
 
-struct irc_info_session {
-	std::string channel;
-	std::string nick;
+class IRCThread;
+class CommandHandler;
 
-	irc_info_session(std::string channel, std::string nick) :
-			channel(channel), nick(nick) {};
+struct ChatCommand
+{
+	const char *name;
+	bool (CommandHandler::*Handler)(const std::string &args, std::string &msg);
+	ChatCommand *childCommand;
+	const std::string help;
 };
 
-class IRCThread {
+enum ChatCommandSearchResult : uint8_t
+{
+	CHAT_COMMAND_OK,
+	CHAT_COMMAND_UNKNOWN,
+	CHAT_COMMAND_UNKNOWN_SUBCOMMAND,
+};
+
+class CommandHandler {
 public:
-	IRCThread(const std::string channel, const std::string nick);
-	~IRCThread();
-	void run(const char *server, unsigned short port);
-	void connect(irc_callbacks_t callbacks, const char *server, unsigned short port);
+	CommandHandler(IRCThread *irc_thread) : m_irc_thread(irc_thread) {};
+	~CommandHandler() {};
+	bool handle_command(const std::string &text, std::string &msg);
 
-	void add_text(const std::string &text);
+public:
+	ChatCommandSearchResult find_command(ChatCommand *table, const char *&text,
+										ChatCommand *&command, ChatCommand **parentCommand = nullptr);
+	ChatCommand *getCommandTable();
 
-private:
-	static void event_join(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
-	static void event_connect(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
-	static void event_numeric(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
-	static void event_channel(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+	bool handle_command_list(const std::string &args, std::string &msg);
+	bool handle_command_help(const std::string &args, std::string &msg);
 
-	static irc_info_session s_iis;
-	bool m_run = true;
-	irc_session_t *m_irc_session = nullptr;
-	static std::string s_bot_name;
-	static IRCThread *that;
+	IRCThread *m_irc_thread = nullptr;
 };
 
