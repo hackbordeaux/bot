@@ -37,6 +37,10 @@ IRCThread::IRCThread(const std::string channel, const std::string nick)
 	s_iis.nick = nick;
 }
 
+IRCThread::~IRCThread()
+{
+	delete m_irc_session;
+}
 void IRCThread::run(const char *server, unsigned short port)
 {
 	irc_callbacks_t callbacks = { 0 };
@@ -132,8 +136,13 @@ void IRCThread::event_channel(irc_session_t *session, const char *event, const c
 	std::cout << "Event channel : " << params[1] << std::endl;
 
 	if (params[1][0] == ':') {
-		
+
 	}
+}
+
+void IRCThread::add_text(const std::string &text)
+{
+
 }
 
 void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,
