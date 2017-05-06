@@ -7,5 +7,5 @@ include_directories(/usr/local/include)
 include_directories(/usr/local/include/lua53)
 link_directories(/usr/local/lib)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES src/main.cpp)
 add_executable(dumbot ${SOURCE_FILES})
