@@ -61,12 +61,13 @@ public:
 	ChatCommandSearchResult find_command(ChatCommand *table, const char *&text,
 										ChatCommand *&command, ChatCommand **parentCommand = nullptr);
 	ChatCommand *getCommandTable();
-	bool is_permission(const Permission &permission_required, const Permission &permission) const;
+	bool is_permission(const Permission &permission_required, const Permission &permission, std::string &msg) const;
 
 	bool handle_command_list(const std::string &args, std::string &msg, const Permission &permission);
 	bool handle_command_help(const std::string &args, std::string &msg, const Permission &permission);
 	bool handle_command_weather(const std::string &args, std::string &msg, const Permission &permission);
 	bool handle_command_say(const std::string &args, std::string &msg, const Permission &permission);
+	bool handle_command_stop(const std::string &args, std::string &msg, const Permission &permission);
 
 	IRCThread *m_irc_thread = nullptr;
 };

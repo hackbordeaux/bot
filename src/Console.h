@@ -31,9 +31,11 @@ class Console {
 public:
 	Console(IRCThread *irc_thread);
 	void run();
-	bool is_running() const;
+	static bool is_running() { return s_is_running; };
+	static void stop();
 
 private:
 	IRCThread *m_irc_thread = nullptr;
-	bool m_is_running = true;
+	static bool s_is_running;
+	static Console *that;
 };

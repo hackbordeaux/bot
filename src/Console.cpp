@@ -26,8 +26,12 @@
 #include "Console.h"
 #include "CommandHandler.h"
 
+bool Console::s_is_running = true;
+Console *Console::that = nullptr;
+
 Console::Console(IRCThread *irc_thread) : m_irc_thread(irc_thread)
 {
+	that = this;
 }
 
 void Console::run()
@@ -44,7 +48,9 @@ void Console::run()
 	}
 }
 
-bool Console::is_running() const
+void Console::stop()
 {
-	return m_is_running;
+	that->m_irc_thread->add_text("Noooo, I died !! Good bye my friends !");
+	s_is_running = false;
 }
+

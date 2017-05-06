@@ -27,6 +27,7 @@
 #include <cstring>
 #include "CommandHandler.h"
 #include "IRCThread.h"
+#include "Console.h"
 
 static const ChatCommand COMMANDHANDLERFINISHER = {nullptr, nullptr, nullptr, ""};
 
@@ -37,16 +38,17 @@ ChatCommand *CommandHandler::getCommandTable()
 			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: /say text"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
 			{"list", &CommandHandler::handle_command_list, nullptr, ""},
+			{"stop", &CommandHandler::handle_command_stop, nullptr, "Stop bot"},
 			COMMANDHANDLERFINISHER,
 	};
 
 	return globalCommandTable;
 }
 
-bool CommandHandler::is_permission(const Permission &permission_required, const Permission &permission) const
+bool CommandHandler::is_permission(const Permission &permission_required, const Permission &permission, std::string &msg) const
 {
 	if (permission_required > permission) {
-		m_irc_thread->add_text("Tu n'as pas la permission !");
+		msg = "Tu n'as pas la permission !";
 		return false;
 	}
 	return true;
@@ -206,9 +208,18 @@ bool CommandHandler::handle_command_weather(const std::string &args, std::string
 
 bool CommandHandler::handle_command_say(const std::string &args, std::string &msg, const Permission &permission)
 {
-	if (is_permission(Permission::ADMIN, permission)) {
-		m_irc_thread->add_text(args);
+	if (is_permission(Permission::ADMIN, permission, msg)) {
+		msg = args;
 	}
 
+	return true;
+}
+
+bool CommandHandler::handle_command_stop(const std::string &args, std::string &msg, const Permission &permission)
+{
+	if (is_permission(Permission::ADMIN, permission, msg)) {
+		msg = "Server stop...";
+	}
+	Console::stop();
 	return true;
 }
