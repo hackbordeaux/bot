@@ -24,6 +24,7 @@
  */
 
 #include <cstring>
+#include <thread>
 #include "IRCThread.h"
 
 IRCThread::IRCThread(const std::string channel, const std::string nick)
@@ -34,49 +35,70 @@ IRCThread::IRCThread(const std::string channel, const std::string nick)
 
 void IRCThread::run(const char *server, unsigned short port)
 {
-	irc_callbacks_t callbacks;
+	irc_callbacks_t callbacks = { 0 };
 	irc_session_t *s;
-
-	memset (&callbacks, 0, sizeof(callbacks));
 
 	callbacks.event_connect = &IRCThread::event_connect;
 	callbacks.event_join = &IRCThread::event_join;
 	//callbacks.event_nick = dump_event;
+	//callbacks.event_numeric = &IRCThread::event_numeric;
 
-	s = irc_create_session (&callbacks);
+	std::thread(&IRCThread::connect);
+}
 
-	if (!s) {
-		std::cout << "Could not create session" << std::endl;
-		return;
-	}
+void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned short port)
+{
+	std::cout << "Debut du thread connexion" << std::endl;
+	while (m_run) {
+		m_irc_session = irc_create_session(&callbacks);
 
-	irc_set_ctx(s, &m_iis);
+		if (!m_irc_session) {
+			std::cout << "Could not create session" << std::endl;
+			return;
+		}
 
-	if (server[0] == '#' && server[1] == '#' ) {
-		server++;
+		irc_set_ctx(m_irc_session, &m_iis);
 
-		irc_option_set(s, LIBIRC_OPTION_SSL_NO_VERIFY);
-	}
+		if (server[0] == '#' && server[1] == '#') {
+			server++;
 
-	// Initiate the IRC server connection
-	if (irc_connect(s, server, port, 0, m_iis.nick.c_str(), 0, 0)) {
-		std::cout << "Could not connect " << irc_strerror(irc_errno(s)) << std::endl;
-		return;
-	}
+			irc_option_set(m_irc_session, LIBIRC_OPTION_SSL_NO_VERIFY);
+		}
 
-	if (irc_run(s)) {
-		std::cout << "Could not connect or I/O error: " << irc_strerror(irc_errno(s)) << std::endl;
-		return;
+		std::cout << "Connection wait...";
+		// Initiate the IRC server connection
+		if (irc_connect(m_irc_session, server, port, 0, m_iis.nick.c_str(), 0, 0)) {
+			std::cout << std::endl << "Could not connect " << irc_strerror(irc_errno(m_irc_session)) << std::endl;
+			return;
+		}
+
+		std::cout << "..." << std::endl;
+
+		if (irc_run(m_irc_session)) {
+			std::cout << "Could not connect or I/O error: " << irc_strerror(irc_errno(m_irc_session)) << std::endl;
+			return;
+		}
+
+		std::cout << "Connection done !" << std::endl;
 	}
 }
 
 void IRCThread::event_connect(irc_session_t *session, const char *event, const char *origin,
 			const char **params, unsigned int count)
 {
-
+	if (!irc_is_connected(session)) {
+		std::cout << "Not connected to IRC" << std::endl;
+	}
+	std::cout << "Connected to IRC" << std::endl;
 }
 
 void IRCThread::event_join(irc_session_t *session, const char *event, const char *origin,
+			const char **params, unsigned int count)
+{
+
+}
+
+void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,
 			const char **params, unsigned int count)
 {
 

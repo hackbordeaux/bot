@@ -36,7 +36,7 @@ int main (int argc, char **argv)
 	}
 
 	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	irc_thread->run(argv[1], 6667);
+	irc_thread->run(argv[1], 6697);
 
 	return 1;
 }

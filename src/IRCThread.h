@@ -37,11 +37,15 @@ class IRCThread {
 public:
 	IRCThread(const std::string channel, const std::string nick);
 	void run(const char *server, unsigned short port);
+	void connect(irc_callbacks_t callbacks, const char *server, unsigned short port);
 
 private:
-	static void event_join (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
-	static void event_connect (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+	static void event_join(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+	static void event_connect(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+	static void event_numeric(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 
 	irc_info_session m_iis;
+	bool m_run = true;
+	irc_session_t *m_irc_session = nullptr;
 };
 
