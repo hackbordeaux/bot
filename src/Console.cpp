@@ -23,35 +23,24 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
-#include "IRCThread.h"
 #include "Console.h"
-#include <cstring>
-#include <thread>
 
-int main (int argc, char **argv)
+Console::Console(IRCThread *irc_thread) : m_irc_thread(irc_thread)
 {
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
-		return 1;
+}
+
+void Console::run()
+{
+	std::cout << "Console run." << std::endl;
+	std::string cmd;
+
+	while(std::cin >> cmd) {
+		std::cout << "cmd : " << cmd << std::endl;
+		m_is_running = false;
 	}
+}
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	std::thread irc([irc_thread, argv] {
-		irc_thread->run(argv[1], 6667);
-	});
-
-	Console *console = new Console(irc_thread);
-	std::thread co([console] { console->run(); });
-	//console->run();
-
-	while(console->is_running()) {
-
-	}
-
-	co.detach();
-	irc.detach();
-
-	return 1;
+bool Console::is_running() const
+{
+	return m_is_running;
 }

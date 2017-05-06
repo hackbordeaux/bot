@@ -11,7 +11,8 @@ option(ENABLE_UNITTESTS "Enable unit tests compilation" FALSE)
 set(SOURCE_FILES
         main.cpp
         IRCThread.cpp
-        CommandHandler.cpp)
+        CommandHandler.cpp
+        Console.cpp)
 set(PROJECT_LIBS
         ircclient
         )

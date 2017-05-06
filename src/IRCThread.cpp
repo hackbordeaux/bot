@@ -24,7 +24,6 @@
  */
 
 #include <cstring>
-#include <thread>
 #include "IRCThread.h"
 #include "CommandHandler.h"
 
