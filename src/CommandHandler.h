@@ -57,6 +57,7 @@ public:
 
 	bool handle_command_list(const std::string &args, std::string &msg);
 	bool handle_command_help(const std::string &args, std::string &msg);
+	bool handle_command_weather(const std::string &args, std::string &msg);
 
 	IRCThread *m_irc_thread = nullptr;
 };

@@ -32,14 +32,8 @@ static const ChatCommand COMMANDHANDLERFINISHER = {nullptr, nullptr, nullptr, ""
 
 ChatCommand *CommandHandler::getCommandTable()
 {
-	static ChatCommand testCommandTable[] = {
-			{"test", nullptr, nullptr, "Usage: /test test"},
-			{"retest", nullptr, nullptr, "Usage: /test retest"},
-			COMMANDHANDLERFINISHER,
-	};
-
 	static ChatCommand globalCommandTable[] = {
-			{"test", nullptr, testCommandTable, "Available subcommands: test | retest"},
+			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: /weather <ville>"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
 			{"list", &CommandHandler::handle_command_list, nullptr, ""},
 			COMMANDHANDLERFINISHER,
@@ -192,6 +186,12 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 			msg = "Command not found";
 			return false;
 	}
+}
+
+bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg)
+{
+	msg = "Commande en cours de developpement";
+	return true;
 }
 
 

@@ -122,7 +122,13 @@ void IRCThread::event_join(irc_session_t *session, const char *event, const char
 	}
 
 	std::cout << "Join channel" << std::endl;
-	const std::string msg = "Salut " + s_iis.channel + " ! Vous allez bien ? ";
+	std::string msg = "";
+
+	if (strcmp(origin, s_bot_name.c_str()) == 0)
+		msg = "Salut " + std::string(origin) + " ! Tu vas bien ?";
+	else
+		msg = "Salut " + s_iis.channel + " ! Vous allez bien ? ";
+
 	irc_cmd_msg(session, s_iis.channel.c_str(), msg.c_str());
 }
 
@@ -140,7 +146,7 @@ void IRCThread::event_channel(irc_session_t *session, const char *event, const c
 
 	std::cout << "Event channel : " << params[0] << " : " << params[1] << std::endl;
 
-	if (params[1][0] == ':') {
+	if (params[1][0] == '.') {
 		CommandHandler *command_handler = new CommandHandler(that);
 		std::string msg = "";
 		bool res = command_handler->handle_command(params[1], msg);
