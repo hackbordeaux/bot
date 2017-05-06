@@ -23,35 +23,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
-#include "IRCThread.h"
-#include "Console.h"
-#include "HttpServer.h"
-#include <cstring>
-#include <thread>
+#pragma once
+#include <json/json.h>
+#include <curl/curl.h>
+#include <functional>
 
-int main (int argc, char **argv)
-{
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
-		return 1;
-	}
+class IRCThread;
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	std::thread irc([irc_thread, argv] {
-		irc_thread->run(argv[1], 6667);
-	});
+typedef std::function<void(int)> FunctionCallback;
 
-	Console *console = new Console(irc_thread);
-	std::thread co([console] { console->run(); });
+class HttpServer {
+public:
+	//HttpServer(IRCThread *irc_thread);
+	HttpServer() {};
+	bool get_json(Json::Value &json_value, const std::string &url);
+	bool is_running() const { return running; };
 
-	while(console->is_running()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	}
+private:
+	static size_t curl_writer(char *data, size_t size, size_t nmemb, void *user_data);
 
-	co.detach();
-	irc.detach();
+	CURL *m_curl = nullptr;
+	std::string m_data = "";
+	bool running = true;
+};
 
-	return 1;
-}
