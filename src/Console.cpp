@@ -38,7 +38,9 @@ void Console::run()
 	std::string msg = "";
 
 	while(getline(std::cin, cmd)) {
-		command_handler->handle_command(cmd, msg, Permission::ADMIN);
+		command_handler->handle_command(cmd, msg, Permission::CONSOLE);
+
+		std::cout << msg << std::endl;
 	}
 }
 

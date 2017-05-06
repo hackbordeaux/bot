@@ -33,6 +33,7 @@ enum Permission : uint8_t
 {
 	USER,
 	ADMIN,
+	CONSOLE,
 };
 
 struct ChatCommand

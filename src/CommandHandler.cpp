@@ -45,7 +45,7 @@ ChatCommand *CommandHandler::getCommandTable()
 
 bool CommandHandler::is_permission(const Permission &permission_required, const Permission &permission) const
 {
-	if (permission_required != permission) {
+	if (permission_required > permission) {
 		m_irc_thread->add_text("Tu n'as pas la permission !");
 		return false;
 	}
@@ -64,10 +64,10 @@ bool CommandHandler::handle_command(const std::string &text, std::string &msg, c
 		case CHAT_COMMAND_OK:
 			return (this->*(command->Handler))(ctext, msg, permission);
 		case CHAT_COMMAND_UNKNOWN_SUBCOMMAND:
-			m_irc_thread->add_text(command->help);
+			msg = command->help;
 			return true;
 		case CHAT_COMMAND_UNKNOWN:
-			m_irc_thread->add_text("Unknown command.");
+			msg = "Unknown command.";
 			return false;
 
 	}
