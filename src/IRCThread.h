@@ -23,22 +23,24 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
-#include "IRCThread.h"
-#include <libircclient/libircclient.h>
-#include <libircclient/libirc_rfcnumeric.h>
-#include <cstring>
+#pragma once
 
-int main (int argc, char **argv)
-{
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
-		return 1;
-	}
+#include <libircclient.h>
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	irc_thread->run(argv[1], 6667);
+struct irc_info_session {
+	std::string channel;
+	std::string nick;
+};
 
-	return 1;
-}
+class IRCThread {
+public:
+	IRCThread(const std::string channel, const std::string nick);
+	void run(const char *server, unsigned short port);
+
+private:
+	static void event_join (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+	static void event_connect (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
+
+	irc_info_session m_iif;
+};
+

@@ -23,22 +23,66 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
 #include "IRCThread.h"
-#include <libircclient/libircclient.h>
-#include <libircclient/libirc_rfcnumeric.h>
-#include <cstring>
 
-int main (int argc, char **argv)
+IRCThread::IRCThread(const std::string channel, const std::string nick)
 {
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
+	m_iif.channel = channel;
+	m_iif.nick = nick;
+}
+
+void IRCThread::run(const char *server, unsigned short port)
+{
+	irc_callbacks_t callbacks;
+	irc_session_t *s;
+
+	memset (&callbacks, 0, sizeof(callbacks));
+
+	callbacks.event_connect = &IRCThread::event_connect;
+	callbacks.event_join = &IRCThread::event_join;
+	//callbacks.event_nick = dump_event;
+
+	s = irc_create_session (&callbacks);
+
+	if (!s) {
+		std::cout << "Could not create session" << std::endl;
 		return 1;
 	}
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	irc_thread->run(argv[1], 6667);
+	iis.channel = argv[3];
+	iis.nick = argv[2];
 
-	return 1;
+	irc_set_ctx(s, &iis);
+
+	if (strchr(argv[1], ':' ) != 0 )
+		port = 0;
+
+	if (argv[1][0] == '#' && argv[1][1] == '#' ) {
+		argv[1]++;
+
+		irc_option_set( s, LIBIRC_OPTION_SSL_NO_VERIFY );
+	}
+
+	// Initiate the IRC server connection
+	if (irc_connect(s, argv[1], port, 0, argv[2], 0, 0)) {
+		std::cout << "Could not connect " << irc_strerror(irc_errno(s)) << std::endl;
+		return 1;
+	}
+
+	if (irc_run(s)) {
+		std::cout << "Could not connect or I/O error: " << irc_strerror(irc_errno(s)) << std::endl;
+		return 1;
+	}
+}
+
+void IRCThread::event_connect(irc_session_t *session, const char *event, const char *origin,
+			const char **params, unsigned int count)
+{
+
+}
+
+void IRCThread::event_join(irc_session_t *session, const char *event, const char *origin,
+			const char **params, unsigned int count)
+{
+
 }
