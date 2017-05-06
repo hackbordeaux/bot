@@ -99,7 +99,7 @@ void IRCThread::event_connect(irc_session_t *session, const char *event, const c
 	s_bot_name = std::string(params[0]);
 
 	if (irc_cmd_join(session, s_iis.channel.c_str(), NULL)) {
-		std::cout << "Unable to join channel spacel, aborting." << std::endl;
+		std::cout << "Unable to join channel " << s_iis.channel << ", aborting." << std::endl;
 		irc_disconnect(session);
 	}
 

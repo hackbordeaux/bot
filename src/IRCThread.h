@@ -25,8 +25,8 @@
 
 #pragma once
 
-#include <libircclient/libircclient.h>
-#include <libircclient/libirc_events.h>
+#include <libircclient.h>
+#include <libirc_events.h>
 #include <iostream>
 
 struct irc_info_session {
