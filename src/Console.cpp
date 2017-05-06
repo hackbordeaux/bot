@@ -24,6 +24,7 @@
  */
 
 #include "Console.h"
+#include "CommandHandler.h"
 
 Console::Console(IRCThread *irc_thread) : m_irc_thread(irc_thread)
 {

@@ -47,7 +47,7 @@ int main (int argc, char **argv)
 	//console->run();
 
 	while(console->is_running()) {
-
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	co.detach();
