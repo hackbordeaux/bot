@@ -38,6 +38,7 @@ public:
 	IRCThread(const std::string channel, const std::string nick);
 	void run(const char *server, unsigned short port);
 	void connect(irc_callbacks_t callbacks, const char *server, unsigned short port);
+	void test() { std::cout << "test" << std::endl; };
 
 private:
 	static void event_join(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);

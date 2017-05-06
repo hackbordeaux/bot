@@ -24,8 +24,10 @@ else()
     message("-- Unittests disabled")
 endif()
 
+find_package (Threads)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LIBS})
+target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${BINDIR}

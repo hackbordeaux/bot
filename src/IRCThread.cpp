@@ -33,6 +33,10 @@ IRCThread::IRCThread(const std::string channel, const std::string nick)
 	m_iis.nick = nick;
 }
 
+void test() {
+	std::cout<< "test" << std::endl;
+}
+
 void IRCThread::run(const char *server, unsigned short port)
 {
 	irc_callbacks_t callbacks = { 0 };
@@ -40,10 +44,13 @@ void IRCThread::run(const char *server, unsigned short port)
 
 	callbacks.event_connect = &IRCThread::event_connect;
 	callbacks.event_join = &IRCThread::event_join;
-	//callbacks.event_nick = dump_event;
-	//callbacks.event_numeric = &IRCThread::event_numeric;
 
-	std::thread(&IRCThread::connect);
+	//std::thread co(IRCThread::connect(callbacks, server, port), this);
+	std::thread thread_connect([this, callbacks, server, port] { this->connect(callbacks, server, port); });
+
+	while(true) {
+
+	}
 }
 
 void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned short port)
