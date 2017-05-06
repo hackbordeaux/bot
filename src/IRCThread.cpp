@@ -24,7 +24,6 @@
  */
 
 #include <cstring>
-#include <thread>
 #include "IRCThread.h"
 #include "CommandHandler.h"
 
@@ -149,7 +148,7 @@ void IRCThread::event_channel(irc_session_t *session, const char *event, const c
 	if (params[1][0] == '.') {
 		CommandHandler *command_handler = new CommandHandler(that);
 		std::string msg = "";
-		bool res = command_handler->handle_command(params[1], msg);
+		bool res = command_handler->handle_command(params[1], msg, Permission::USER);
 
 		that->add_text(msg);
 	}

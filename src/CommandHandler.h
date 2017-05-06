@@ -29,10 +29,17 @@
 class IRCThread;
 class CommandHandler;
 
+enum Permission : uint8_t
+{
+	USER,
+	ADMIN,
+	CONSOLE,
+};
+
 struct ChatCommand
 {
 	const char *name;
-	bool (CommandHandler::*Handler)(const std::string &args, std::string &msg);
+	bool (CommandHandler::*Handler)(const std::string &args, std::string &msg, const Permission &permission);
 	ChatCommand *childCommand;
 	const std::string help;
 };
@@ -48,16 +55,18 @@ class CommandHandler {
 public:
 	CommandHandler(IRCThread *irc_thread) : m_irc_thread(irc_thread) {};
 	~CommandHandler() {};
-	bool handle_command(const std::string &text, std::string &msg);
+	bool handle_command(const std::string &text, std::string &msg, const Permission &permission);
 
 public:
 	ChatCommandSearchResult find_command(ChatCommand *table, const char *&text,
 										ChatCommand *&command, ChatCommand **parentCommand = nullptr);
 	ChatCommand *getCommandTable();
+	bool is_permission(const Permission &permission_required, const Permission &permission) const;
 
-	bool handle_command_list(const std::string &args, std::string &msg);
-	bool handle_command_help(const std::string &args, std::string &msg);
-	bool handle_command_weather(const std::string &args, std::string &msg);
+	bool handle_command_list(const std::string &args, std::string &msg, const Permission &permission);
+	bool handle_command_help(const std::string &args, std::string &msg, const Permission &permission);
+	bool handle_command_weather(const std::string &args, std::string &msg, const Permission &permission);
+	bool handle_command_say(const std::string &args, std::string &msg, const Permission &permission);
 
 	IRCThread *m_irc_thread = nullptr;
 };

@@ -34,6 +34,7 @@ ChatCommand *CommandHandler::getCommandTable()
 {
 	static ChatCommand globalCommandTable[] = {
 			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: /weather <ville>"},
+			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: /say text"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
 			{"list", &CommandHandler::handle_command_list, nullptr, ""},
 			COMMANDHANDLERFINISHER,
@@ -42,7 +43,16 @@ ChatCommand *CommandHandler::getCommandTable()
 	return globalCommandTable;
 }
 
-bool CommandHandler::handle_command(const std::string &text, std::string &msg)
+bool CommandHandler::is_permission(const Permission &permission_required, const Permission &permission) const
+{
+	if (permission_required > permission) {
+		m_irc_thread->add_text("Tu n'as pas la permission !");
+		return false;
+	}
+	return true;
+}
+
+bool CommandHandler::handle_command(const std::string &text, std::string &msg, const Permission &permission)
 {
 	ChatCommand *command = nullptr;
 	ChatCommand *parentCommand = nullptr;
@@ -52,12 +62,12 @@ bool CommandHandler::handle_command(const std::string &text, std::string &msg)
 	ChatCommandSearchResult res = find_command(getCommandTable(), ctext, command, &parentCommand);
 	switch (res) {
 		case CHAT_COMMAND_OK:
-			return (this->*(command->Handler))(ctext, msg);
+			return (this->*(command->Handler))(ctext, msg, permission);
 		case CHAT_COMMAND_UNKNOWN_SUBCOMMAND:
-			m_irc_thread->add_text(command->help);
+			msg = command->help;
 			return true;
 		case CHAT_COMMAND_UNKNOWN:
-			m_irc_thread->add_text("Unknown command.");
+			msg = "Unknown command.";
 			return false;
 
 	}
@@ -140,7 +150,7 @@ ChatCommandSearchResult CommandHandler::find_command(ChatCommand *table, const c
 	return CHAT_COMMAND_UNKNOWN;
 }
 
-bool CommandHandler::handle_command_list(const std::string &args, std::string &msg)
+bool CommandHandler::handle_command_list(const std::string &args, std::string &msg, const Permission &permission)
 {
 	ChatCommand *cmds = getCommandTable();
 	msg += "Command list : ";
@@ -151,11 +161,11 @@ bool CommandHandler::handle_command_list(const std::string &args, std::string &m
 	return true;
 }
 
-bool CommandHandler::handle_command_help(const std::string &args, std::string &msg)
+bool CommandHandler::handle_command_help(const std::string &args, std::string &msg, const Permission &permission)
 {
 	if (args.empty()) {
 		msg = "/help <command> to get the help of the command \n";
-		return handle_command_list(args, msg);
+		return handle_command_list(args, msg, permission);
 	}
 
 	ChatCommand *command = nullptr;
@@ -188,10 +198,17 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 	}
 }
 
-bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg)
+bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg, const Permission &permission)
 {
 	msg = "Commande en cours de developpement";
 	return true;
 }
 
+bool CommandHandler::handle_command_say(const std::string &args, std::string &msg, const Permission &permission)
+{
+	if (is_permission(Permission::ADMIN, permission)) {
+		m_irc_thread->add_text(args);
+	}
 
+	return true;
+}
