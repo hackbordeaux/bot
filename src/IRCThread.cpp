@@ -27,14 +27,14 @@
 #include <thread>
 #include "IRCThread.h"
 
+
+std::string IRCThread::s_bot_name = "mybot_new";
+irc_info_session IRCThread::s_iis = irc_info_session("server", "nick");
+
 IRCThread::IRCThread(const std::string channel, const std::string nick)
 {
-	m_iis.channel = channel;
-	m_iis.nick = nick;
-}
-
-void test() {
-	std::cout<< "test" << std::endl;
+	s_iis.channel = channel;
+	s_iis.nick = nick;
 }
 
 void IRCThread::run(const char *server, unsigned short port)
@@ -46,11 +46,9 @@ void IRCThread::run(const char *server, unsigned short port)
 	callbacks.event_join = &IRCThread::event_join;
 
 	//std::thread co(IRCThread::connect(callbacks, server, port), this);
-	std::thread thread_connect([this, callbacks, server, port] { this->connect(callbacks, server, port); });
-
-	while(true) {
-
-	}
+	// Ne sert à rien
+	//std::thread thread_connect([this, callbacks, server, port] { this->connect(callbacks, server, port); });
+	connect(callbacks, server, port);
 }
 
 void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned short port)
@@ -64,7 +62,7 @@ void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned 
 			return;
 		}
 
-		irc_set_ctx(m_irc_session, &m_iis);
+		irc_set_ctx(m_irc_session, &s_iis);
 
 		if (server[0] == '#' && server[1] == '#') {
 			server++;
@@ -74,7 +72,7 @@ void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned 
 
 		std::cout << "Connection wait...";
 		// Initiate the IRC server connection
-		if (irc_connect(m_irc_session, server, port, 0, m_iis.nick.c_str(), 0, 0)) {
+		if (irc_connect(m_irc_session, server, port, 0, s_iis.nick.c_str(), 0, 0)) {
 			std::cout << std::endl << "Could not connect " << irc_strerror(irc_errno(m_irc_session)) << std::endl;
 			return;
 		}
@@ -97,12 +95,20 @@ void IRCThread::event_connect(irc_session_t *session, const char *event, const c
 		std::cout << "Not connected to IRC" << std::endl;
 	}
 	std::cout << "Connected to IRC" << std::endl;
+
+	s_bot_name = std::string(params[0]);
+
+	if (irc_cmd_join(session, s_iis.channel.c_str(), NULL)) {
+		std::cout << "Unable to join channel spacel, aborting." << std::endl;
+		irc_disconnect(session);
+	}
+
 }
 
 void IRCThread::event_join(irc_session_t *session, const char *event, const char *origin,
 			const char **params, unsigned int count)
 {
-
+	std::cout << "Join channel" << std::endl;
 }
 
 void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,

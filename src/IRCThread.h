@@ -25,12 +25,16 @@
 
 #pragma once
 
-#include <libircclient.h>
+#include <libircclient/libircclient.h>
+#include <libircclient/libirc_events.h>
 #include <iostream>
 
 struct irc_info_session {
 	std::string channel;
 	std::string nick;
+
+	irc_info_session(std::string channel, std::string nick) :
+			channel(channel), nick(nick) {};
 };
 
 class IRCThread {
@@ -45,8 +49,9 @@ private:
 	static void event_connect(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 	static void event_numeric(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 
-	irc_info_session m_iis;
+	static irc_info_session s_iis;
 	bool m_run = true;
 	irc_session_t *m_irc_session = nullptr;
+	static std::string s_bot_name;
 };
 
