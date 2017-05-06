@@ -37,9 +37,8 @@ void Console::run()
 	CommandHandler *command_handler = new CommandHandler(m_irc_thread);
 	std::string msg = "";
 
-	while(std::cin >> cmd) {
+	while(getline(std::cin, cmd)) {
 		command_handler->handle_command(cmd, msg, Permission::ADMIN);
-		m_irc_thread->add_text(msg);
 	}
 }
 
