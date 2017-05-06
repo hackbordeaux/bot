@@ -29,6 +29,7 @@
 
 int main (int argc, char **argv)
 {
+	/*
 	if ( argc != 4 )
 	{
 		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
@@ -37,6 +38,7 @@ int main (int argc, char **argv)
 
 	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
 	irc_thread->run(argv[1], 6667);
-
+*/
+	request_weather(NULL);
 	return 1;
 }

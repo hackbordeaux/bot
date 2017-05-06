@@ -23,7 +23,7 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <unitypes.h>
+
 #include <cstring>
 #include "CommandHandler.h"
 #include "IRCThread.h"
@@ -193,5 +193,3 @@ bool CommandHandler::handle_command_weather(const std::string &args, std::string
 	msg = "Commande en cours de developpement";
 	return true;
 }
-
-

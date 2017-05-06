@@ -17,7 +17,7 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata) {
 }
 
 
-bool curl_request(std::string url) {
+bool curl_request(const std::string *url) {
 
   CURL *easyhandle = curl_easy_init();
   std::string  *dataRes;
@@ -48,6 +48,7 @@ bool curl_request(std::string url) {
 
 bool request_weather(std::string args[]) {
   std::string APIKEY = "55c7136ab4700ab6c1c6a23122a9b7a";
-  curl_request("http://google.com");
+  const std::string url = "http://google.com";
+  curl_request(&url);
   return true;
 }
