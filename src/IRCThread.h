@@ -26,6 +26,7 @@
 #pragma once
 
 #include <libircclient.h>
+#include <iostream>
 
 struct irc_info_session {
 	std::string channel;
@@ -41,6 +42,6 @@ private:
 	static void event_join (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 	static void event_connect (irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 
-	irc_info_session m_iif;
+	irc_info_session m_iis;
 };
 

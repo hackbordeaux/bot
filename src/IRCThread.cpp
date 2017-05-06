@@ -23,12 +23,13 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <cstring>
 #include "IRCThread.h"
 
 IRCThread::IRCThread(const std::string channel, const std::string nick)
 {
-	m_iif.channel = channel;
-	m_iif.nick = nick;
+	m_iis.channel = channel;
+	m_iis.nick = nick;
 }
 
 void IRCThread::run(const char *server, unsigned short port)
@@ -46,32 +47,26 @@ void IRCThread::run(const char *server, unsigned short port)
 
 	if (!s) {
 		std::cout << "Could not create session" << std::endl;
-		return 1;
+		return;
 	}
 
-	iis.channel = argv[3];
-	iis.nick = argv[2];
+	irc_set_ctx(s, &m_iis);
 
-	irc_set_ctx(s, &iis);
+	if (server[0] == '#' && server[1] == '#' ) {
+		server++;
 
-	if (strchr(argv[1], ':' ) != 0 )
-		port = 0;
-
-	if (argv[1][0] == '#' && argv[1][1] == '#' ) {
-		argv[1]++;
-
-		irc_option_set( s, LIBIRC_OPTION_SSL_NO_VERIFY );
+		irc_option_set(s, LIBIRC_OPTION_SSL_NO_VERIFY);
 	}
 
 	// Initiate the IRC server connection
-	if (irc_connect(s, argv[1], port, 0, argv[2], 0, 0)) {
+	if (irc_connect(s, server, port, 0, m_iis.nick.c_str(), 0, 0)) {
 		std::cout << "Could not connect " << irc_strerror(irc_errno(s)) << std::endl;
-		return 1;
+		return;
 	}
 
 	if (irc_run(s)) {
 		std::cout << "Could not connect or I/O error: " << irc_strerror(irc_errno(s)) << std::endl;
-		return 1;
+		return;
 	}
 }
 

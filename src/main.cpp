@@ -25,8 +25,6 @@
 
 #include <iostream>
 #include "IRCThread.h"
-#include <libircclient/libircclient.h>
-#include <libircclient/libirc_rfcnumeric.h>
 #include <cstring>
 
 int main (int argc, char **argv)
