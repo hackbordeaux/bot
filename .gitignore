@@ -6,4 +6,4 @@ build/*
 .idea/dbnavigator.xml
 .idea/encodings.xml
 cmake-build-debug/*
-
+bin/*
