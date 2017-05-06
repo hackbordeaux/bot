@@ -34,10 +34,12 @@ void Console::run()
 {
 	std::cout << "Console run." << std::endl;
 	std::string cmd;
+	CommandHandler *command_handler = new CommandHandler(m_irc_thread);
+	std::string msg = "";
 
 	while(std::cin >> cmd) {
-		std::cout << "cmd : " << cmd << std::endl;
-		m_is_running = false;
+		command_handler->handle_command(cmd, msg, Permission::ADMIN);
+		m_irc_thread->add_text(msg);
 	}
 }
 

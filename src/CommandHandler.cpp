@@ -42,7 +42,7 @@ ChatCommand *CommandHandler::getCommandTable()
 	return globalCommandTable;
 }
 
-bool CommandHandler::handle_command(const std::string &text, std::string &msg)
+bool CommandHandler::handle_command(const std::string &text, std::string &msg, const Permission &permission)
 {
 	ChatCommand *command = nullptr;
 	ChatCommand *parentCommand = nullptr;
@@ -194,4 +194,7 @@ bool CommandHandler::handle_command_weather(const std::string &args, std::string
 	return true;
 }
 
-
+bool CommandHandler::handle_command_say(const std::string &args, std::string &msg)
+{
+	
+}

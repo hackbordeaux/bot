@@ -44,11 +44,17 @@ enum ChatCommandSearchResult : uint8_t
 	CHAT_COMMAND_UNKNOWN_SUBCOMMAND,
 };
 
+enum Permission : uint8_t
+{
+	USER,
+	ADMIN,
+};
+
 class CommandHandler {
 public:
 	CommandHandler(IRCThread *irc_thread) : m_irc_thread(irc_thread) {};
 	~CommandHandler() {};
-	bool handle_command(const std::string &text, std::string &msg);
+	bool handle_command(const std::string &text, std::string &msg, const Permission &permission);
 
 public:
 	ChatCommandSearchResult find_command(ChatCommand *table, const char *&text,
@@ -58,6 +64,7 @@ public:
 	bool handle_command_list(const std::string &args, std::string &msg);
 	bool handle_command_help(const std::string &args, std::string &msg);
 	bool handle_command_weather(const std::string &args, std::string &msg);
+	bool handle_command_say(const std::string &args, std::string &msg);
 
 	IRCThread *m_irc_thread = nullptr;
 };
