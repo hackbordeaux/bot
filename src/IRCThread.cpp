@@ -44,6 +44,7 @@ void IRCThread::run(const char *server, unsigned short port)
 
 	callbacks.event_connect = &IRCThread::event_connect;
 	callbacks.event_join = &IRCThread::event_join;
+	callbacks.event_channel = &IRCThread::event_channel;
 
 	//std::thread co(IRCThread::connect(callbacks, server, port), this);
 	// Ne sert à rien
@@ -109,6 +110,12 @@ void IRCThread::event_join(irc_session_t *session, const char *event, const char
 			const char **params, unsigned int count)
 {
 	std::cout << "Join channel" << std::endl;
+}
+
+void IRCThread::event_channel(irc_session_t *session, const char *event, const char *origin,
+			const char **params, unsigned int count)
+{
+	std::cout << "Event channel" << std::endl;
 }
 
 void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,
