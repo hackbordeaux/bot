@@ -100,7 +100,7 @@ void IRCThread::event_connect(irc_session_t *session, const char *event, const c
 	s_bot_name = std::string(params[0]);
 
 	if (irc_cmd_join(session, s_iis.channel.c_str(), NULL)) {
-		std::cout << "Unable to join channel " << s_iis.channel << ", aborting." << std::endl;
+		std::cerr << "Unable to join channel " << s_iis.channel << ", aborting." << std::endl;
 		irc_disconnect(session);
 	}
 
@@ -109,13 +109,31 @@ void IRCThread::event_connect(irc_session_t *session, const char *event, const c
 void IRCThread::event_join(irc_session_t *session, const char *event, const char *origin,
 			const char **params, unsigned int count)
 {
+	if (!irc_is_connected(session)) {
+		std::cerr << "Error: not connected to IRC on " << __FUNCTION__ << std::endl;
+		return;
+	}
+
 	std::cout << "Join channel" << std::endl;
 }
 
 void IRCThread::event_channel(irc_session_t *session, const char *event, const char *origin,
 			const char **params, unsigned int count)
 {
-	std::cout << "Event channel" << std::endl;
+	if (!irc_is_connected(session)) {
+		std::cerr << "Error: not connected to IRC on " << __FUNCTION__ << std::endl;
+		return;
+	}
+
+	if (strcmp(origin, IRCThread::s_bot_name.c_str()) == 0 || count == 1) {
+		return;
+	}
+
+	std::cout << "Event channel : " << params[1] << std::endl;
+
+	if (params[1][0] == ':') {
+		
+	}
 }
 
 void IRCThread::event_numeric(irc_session_t *session, const char *event, const char *origin,
