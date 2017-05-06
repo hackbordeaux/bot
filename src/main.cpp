@@ -44,7 +44,6 @@ int main (int argc, char **argv)
 
 	Console *console = new Console(irc_thread);
 	std::thread co([console] { console->run(); });
-	//console->run();
 
 	while(console->is_running()) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
