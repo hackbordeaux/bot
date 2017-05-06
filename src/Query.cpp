@@ -17,14 +17,15 @@ size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata) {
 }
 
 
-bool curl_request(const std::string *url) {
-
+bool curl_request(const std::string &url) {
+  std::cout << url << std::endl;
   CURL *easyhandle = curl_easy_init();
   std::string  *dataRes;
   char errorBuffer[CURL_ERROR_SIZE];
   //curl_easy_setopt(easyhandle, CURLOPT_WRITEFUNCTION, write_callback);
   //curl_easy_setopt(easyhandle, CURLOPT_WRITEDATA, dataRes);
   curl_easy_setopt(easyhandle, CURLOPT_URL, url);
+  std::cout << url << std::endl;
   curl_easy_setopt(easyhandle, CURLOPT_ERRORBUFFER, errorBuffer);
   errorBuffer[0] = 0;
   curl_easy_setopt(easyhandle, CURLOPT_VERBOSE, 1L); //for debugging purposes
@@ -34,10 +35,14 @@ bool curl_request(const std::string *url) {
     std::cout << "dommage essaie encore :(" << std::endl;
     size_t len = strlen(errorBuffer);
     fprintf(stderr, "\nlibcurl: %d", success);
-    if(len)
+    if(len) {
+      std::cout << "coucou" << std::endl;
       fprintf(stderr, "%s%s", errorBuffer, ((errorBuffer[len - 1] != '\n') ? "\n" : ""));
-    else
+    }
+    else {
+      std::cout << "pas coucou" << std::endl;
       fprintf(stderr, "%s\n", curl_easy_strerror(success));
+    }
     curl_easy_cleanup(easyhandle);
     return false;
   }
@@ -46,9 +51,9 @@ bool curl_request(const std::string *url) {
 }
 
 
-bool request_weather(std::string args[]) {
+bool request_weather() {
   std::string APIKEY = "55c7136ab4700ab6c1c6a23122a9b7a";
   const std::string url = "http://google.com";
-  curl_request(&url);
+  curl_request(url);
   return true;
 }

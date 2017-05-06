@@ -6,4 +6,4 @@
 
 size_t write_callback(char *ptr, size_t size, size_t nmemb, void *userdata);
 bool curl_request(std::string *url);
-bool request_weather(std::string args[]);
+bool request_weather();
