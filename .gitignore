@@ -7,3 +7,5 @@ build/*
 .idea/encodings.xml
 cmake-build-debug/*
 bin/*
+src/config/*
+

@@ -12,7 +12,9 @@ set(SOURCE_FILES
         main.cpp
         IRCThread.cpp
         CommandHandler.cpp
-        Console.cpp)
+        Console.cpp
+        HttpServer.cpp
+        config/Config.cpp)
 set(PROJECT_LIBS
         ircclient
         )
@@ -30,6 +32,10 @@ find_package (Threads)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${PROJECT_LIBS})
 target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PROJECT_NAME} curl)
+target_link_libraries(${PROJECT_NAME} curlpp)
+target_link_libraries(${PROJECT_NAME} jsoncpp
+                                    xml2)
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${BINDIR}

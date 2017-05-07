@@ -23,35 +23,48 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
-#include "IRCThread.h"
-#include "Console.h"
 #include "HttpServer.h"
-#include <cstring>
-#include <thread>
+#include <curlpp/cURLpp.hpp>
+#include <curlpp/Options.hpp>
+#include <sstream>
+#include <json/json.h>
+/*
+HttpServer::HttpServer(IRCThread *irc_thread) : m_irc_thread(irc_thread)
+{}
+ */
 
-int main (int argc, char **argv)
+bool HttpServer::get_json(Json::Value &json_value, const std::string &url)
 {
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
-		return 1;
+	curl_global_init(CURL_GLOBAL_ALL);
+	m_curl = curl_easy_init();
+
+	curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(m_curl, CURLOPT_FOLLOWLOCATION, 1L);
+	curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, curl_writer);
+	curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, &m_data);
+
+	bool success = curl_easy_perform(m_curl);
+	if (success) {
+		std::cerr << "curl error" << std::endl;
 	}
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	std::thread irc([irc_thread, argv] {
-		irc_thread->run(argv[1], 6667);
-	});
+	curl_easy_cleanup(m_curl);
+	curl_global_cleanup();
 
-	Console *console = new Console(irc_thread);
-	std::thread co([console] { console->run(); });
-
-	while(console->is_running()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	Json::Reader *reader = new Json::Reader();
+	if (!reader->parse(m_data, json_value)) {
+		std::cerr << "Error parse" << std::endl;
+		return false;
 	}
 
-	co.detach();
-	irc.detach();
+	running = false;
 
-	return 1;
+	return true;
+}
+
+size_t HttpServer::curl_writer(char *data, size_t size, size_t nmemb, void *read_buffer)
+{
+	size_t realsize = size * nmemb;
+	((std::string *) read_buffer)->append((const char *) data, realsize);
+	return realsize;
 }

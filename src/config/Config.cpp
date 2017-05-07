@@ -23,35 +23,6 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <iostream>
-#include "IRCThread.h"
-#include "Console.h"
-#include "HttpServer.h"
-#include <cstring>
-#include <thread>
+#include "Config.h"
 
-int main (int argc, char **argv)
-{
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
-		return 1;
-	}
-
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	std::thread irc([irc_thread, argv] {
-		irc_thread->run(argv[1], 6667);
-	});
-
-	Console *console = new Console(irc_thread);
-	std::thread co([console] { console->run(); });
-
-	while(console->is_running()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	}
-
-	co.detach();
-	irc.detach();
-
-	return 1;
-}
+const std::string Config::key = "55c7136ab4700ab6c1c6a23122a9b7a";
