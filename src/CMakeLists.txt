@@ -35,7 +35,7 @@ target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(${PROJECT_NAME} curl)
 target_link_libraries(${PROJECT_NAME} curlpp)
 target_link_libraries(${PROJECT_NAME} jsoncpp
-                                    xml2)
+                                    )
 
 install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION ${BINDIR}

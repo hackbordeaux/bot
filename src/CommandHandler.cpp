@@ -23,7 +23,6 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <unitypes.h>
 #include <cstring>
 #include <thread>
 #include "CommandHandler.h"
@@ -257,7 +256,7 @@ bool CommandHandler::handle_command_joke(const std::string &args, std::string &m
 												 const Permission &permission)
 {
 	HttpServer *http_server = new HttpServer();
-	const std::string url = "http://webknox.com/api/jokes/random?apiKey=bejebfjbfacthvpviuuxonimaehmtve";
+	const std::string url = "http://webknox.com/api/jokes/random?apiKey=bejebgdahjzmcxjyxbkpmbmbvtttidu";
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
 	while (http_server->is_running()) {
@@ -271,6 +270,7 @@ bool CommandHandler::handle_command_quote(const std::string &args, std::string &
 												 const Permission &permission)
 {
 	HttpServer *http_server = new HttpServer();
+	// Key default  A CHANGER
 	const std::string url = "http://q.uote.me/api.php?p=json&l=1&s=random";
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
