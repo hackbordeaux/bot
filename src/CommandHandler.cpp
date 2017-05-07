@@ -209,7 +209,7 @@ bool CommandHandler::handle_command_weather(const std::string &args, std::string
 bool CommandHandler::handle_command_say(const std::string &args, std::string &msg, const Permission &permission)
 {
 	if (is_permission(Permission::ADMIN, permission, msg)) {
-		msg = args;
+		m_irc_thread->add_text(args);
 	}
 
 	return true;
@@ -219,7 +219,7 @@ bool CommandHandler::handle_command_stop(const std::string &args, std::string &m
 {
 	if (is_permission(Permission::ADMIN, permission, msg)) {
 		msg = "Server stop...";
+		Console::stop();
 	}
-	Console::stop();
 	return true;
 }
