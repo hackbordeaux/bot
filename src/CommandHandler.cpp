@@ -38,6 +38,9 @@ ChatCommand *CommandHandler::getCommandTable()
 {
 	static ChatCommand globalCommandTable[] = {
 			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: /weather <ville>"},
+			{"chuck_norris", &CommandHandler::handle_command_chuck_norris, nullptr, "Usage: /chuck_norris"},
+			{"joke", &CommandHandler::handle_command_joke, nullptr, "Usage: /joke"},
+			{"quote", &CommandHandler::handle_command_quote, nullptr, "Usage: /quote"},
 			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: /say text"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
 			{"list", &CommandHandler::handle_command_list, nullptr, ""},
@@ -232,5 +235,49 @@ bool CommandHandler::handle_command_stop(const std::string &args, std::string &m
 		msg = "Server stop...";
 		Console::stop();
 	}
+	return true;
+}
+
+bool CommandHandler::handle_command_chuck_norris(const std::string &args, std::string &msg,
+												 const Permission &permission)
+{
+	HttpServer *http_server = new HttpServer();
+	const std::string url = "http://api.icndb.com/jokes/random";
+	Json::Value json_value;
+	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
+	while (http_server->is_running()) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+	http.detach();
+	msg = json_value["value"]["joke"].asString();
+	return true;
+}
+
+bool CommandHandler::handle_command_joke(const std::string &args, std::string &msg,
+												 const Permission &permission)
+{
+	HttpServer *http_server = new HttpServer();
+	const std::string url = "http://webknox.com/api/jokes/random?apiKey=bejebfjbfacthvpviuuxonimaehmtve";
+	Json::Value json_value;
+	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
+	while (http_server->is_running()) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+	http.detach();
+	msg = json_value["joke"].asString();
+	return true;
+}
+bool CommandHandler::handle_command_quote(const std::string &args, std::string &msg,
+												 const Permission &permission)
+{
+	HttpServer *http_server = new HttpServer();
+	const std::string url = "http://q.uote.me/api.php?p=json&l=1&s=random";
+	Json::Value json_value;
+	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
+	while (http_server->is_running()) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
+	http.detach();
+	msg = json_value["data"]["text"].asString();
 	return true;
 }
