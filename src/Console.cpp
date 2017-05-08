@@ -50,7 +50,6 @@ void Console::run()
 
 void Console::stop()
 {
-	that->m_irc_thread->add_text("Noooo, I died !! Good bye my friends !");
 	s_is_running = false;
 }
 

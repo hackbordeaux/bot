@@ -238,6 +238,7 @@ bool CommandHandler::handle_command_stop(const std::string &args, std::string &m
 {
 	if (is_permission(Permission::ADMIN, permission, msg)) {
 		msg = "Server stop...";
+		m_irc_thread->add_text("Noooo, I died !! Good bye my friends !");
 		Console::stop();
 	}
 	return true;
