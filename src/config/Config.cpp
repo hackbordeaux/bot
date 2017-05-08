@@ -25,4 +25,4 @@
 
 #include "Config.h"
 
-const std::string Config::key = "55c7136ab4700ab6c1c6a23122a9b7a";
+const std::string Config::key = "52b05c129e3947a22173de7a3de220e1";

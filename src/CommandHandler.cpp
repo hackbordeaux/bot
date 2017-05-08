@@ -208,14 +208,15 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg, const Permission &permission)
 {
 	HttpServer *http_server = new HttpServer();
-	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q=Paris&APPID="+Config::key;
+	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q="+args+"s&APPID="+Config::key;
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
 	while (http_server->is_running()) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 	http.detach();
-	msg = "La température maximum à " + json_value["name"].asString() + " est de " + json_value["main"]["temp"].asString();
+	int temp = json_value["main"]["temp"].asDouble() - 273.15;
+	msg = "La température maximum à " + json_value["name"].asString() + " est de " + std::to_string(temp) + " degrès.";
 	return true;
 }
 
