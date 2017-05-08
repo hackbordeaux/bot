@@ -208,7 +208,7 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg, const Permission &permission)
 {
 	HttpServer *http_server = new HttpServer();
-	const std::string url = "http://samples.openweathermap.org/data/2.5/weather?q=Paris&APPID="+Config::key;
+	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q=Paris&APPID="+Config::key;
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
 	while (http_server->is_running()) {
