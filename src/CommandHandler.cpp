@@ -37,11 +37,11 @@ static const ChatCommand COMMANDHANDLERFINISHER = {nullptr, nullptr, nullptr, ""
 ChatCommand *CommandHandler::getCommandTable()
 {
 	static ChatCommand globalCommandTable[] = {
-			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: /weather <ville>"},
-			{"chuck_norris", &CommandHandler::handle_command_chuck_norris, nullptr, "Usage: /chuck_norris"},
-			{"joke", &CommandHandler::handle_command_joke, nullptr, "Usage: /joke"},
-			{"quote", &CommandHandler::handle_command_quote, nullptr, "Usage: /quote"},
-			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: /say text"},
+			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: .weather <ville>"},
+			{"chuck_norris", &CommandHandler::handle_command_chuck_norris, nullptr, "Usage: .chuck_norris"},
+			{"joke", &CommandHandler::handle_command_joke, nullptr, "Usage: .joke"},
+			{"quote", &CommandHandler::handle_command_quote, nullptr, "Usage: .quote"},
+			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: .say text"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
 			{"list", &CommandHandler::handle_command_list, nullptr, ""},
 			{"stop", &CommandHandler::handle_command_stop, nullptr, "Stop bot"},
@@ -285,6 +285,6 @@ bool CommandHandler::handle_command_quote(const std::string &args, std::string &
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 	http.detach();
-	msg = json_value["data"]["text"].asString();
+	msg = json_value["data"][0]["text"].asString();
 	return true;
 }
