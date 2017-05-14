@@ -40,6 +40,7 @@ ChatCommand *CommandHandler::getCommandTable()
 			{"weather", &CommandHandler::handle_command_weather, nullptr, "Usage: .weather <ville>"},
 			{"chuck_norris", &CommandHandler::handle_command_chuck_norris, nullptr, "Usage: .chuck_norris"},
 			{"joke", &CommandHandler::handle_command_joke, nullptr, "Usage: .joke"},
+			{"vdm", &CommandHandler::handle_command_vdm, nullptr, "Usage: .vdm"},
 			{"quote", &CommandHandler::handle_command_quote, nullptr, "Usage: .quote"},
 			{"say", &CommandHandler::handle_command_say, nullptr, "Usage: .say text"},
 			{"help", &CommandHandler::handle_command_help, nullptr, ""},
@@ -241,6 +242,12 @@ bool CommandHandler::handle_command_stop(const std::string &args, std::string &m
 		m_irc_thread->add_text("Noooo, I died !! Good bye my friends !");
 		Console::stop();
 	}
+	return true;
+}
+
+bool CommandHandler::handle_command_vdm(const std::string &args, std::string &msg, const Permission &permission)
+{
+	msg = "WIP";
 	return true;
 }
 
