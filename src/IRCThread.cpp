@@ -123,7 +123,7 @@ void IRCThread::event_join(irc_session_t *session, const char *event, const char
 	std::cout << "Join channel" << std::endl;
 	std::string msg = "";
 
-	if (strcmp(origin, s_bot_name.c_str()) == 0)
+	if (strcmp(origin, s_bot_name.c_str()) != 0)
 		msg = "Salut " + std::string(origin) + " ! Tu vas bien ?";
 	else
 		msg = "Salut " + s_iis.channel + " ! Vous allez bien ? ";
