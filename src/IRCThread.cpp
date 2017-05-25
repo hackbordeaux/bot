@@ -124,8 +124,9 @@ void IRCThread::event_join(irc_session_t *session, const char *event, const char
 	std::string msg = "";
 	std::string ori = (std::string) origin;
 	std::string pseudo = ori.substr(0, ori.find("!"));
+	std::cout << s_bot_name << " et " << s_iis.nick << std::endl;
 
-	if (strcmp(origin, s_bot_name.c_str()) == 0)
+	if (strcmp(pseudo.c_str(), s_bot_name.c_str()) != 0)
 		msg = "Salut " + std::string(pseudo) + " ! Tu vas bien ?";
 	else
 		msg = "Salut " + s_iis.channel + " ! Vous allez bien ? ";
