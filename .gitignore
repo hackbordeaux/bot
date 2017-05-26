@@ -9,4 +9,11 @@ cmake-build-debug/*
 bin/*
 src/config/*
 src/config/
-
+CMakeFiles/*
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+dumbot.cbp
+src/CMakeFiles/*
+src/Makefile
+src/cmake_install.cmake
