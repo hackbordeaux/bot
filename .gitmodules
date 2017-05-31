@@ -1,0 +1,3 @@
+[submodule "lib/WinterWind"]
+	path = lib/WinterWind
+	url = git@gitlab.com:WinterWind/WinterWind.git
