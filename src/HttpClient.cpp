@@ -23,17 +23,17 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "HttpServer.h"
+#include "HttpClient.h"
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Options.hpp>
 #include <sstream>
 #include <json/json.h>
 /*
-HttpServer::HttpServer(IRCThread *irc_thread) : m_irc_thread(irc_thread)
+HttpClient::HttpClient(IRCThread *irc_thread) : m_irc_thread(irc_thread)
 {}
  */
 
-bool HttpServer::get_json(Json::Value &json_value, const std::string &url)
+bool HttpClient::get_json(Json::Value &json_value, const std::string &url)
 {
 	curl_global_init(CURL_GLOBAL_ALL);
 	m_curl = curl_easy_init();
@@ -62,7 +62,7 @@ bool HttpServer::get_json(Json::Value &json_value, const std::string &url)
 	return true;
 }
 
-size_t HttpServer::curl_writer(char *data, size_t size, size_t nmemb, void *read_buffer)
+size_t HttpClient::curl_writer(char *data, size_t size, size_t nmemb, void *read_buffer)
 {
 	size_t realsize = size * nmemb;
 	((std::string *) read_buffer)->append((const char *) data, realsize);

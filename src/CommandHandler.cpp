@@ -28,7 +28,7 @@
 #include <cmath>
 #include "CommandHandler.h"
 #include "IRCThread.h"
-#include "HttpServer.h"
+#include "HttpClient.h"
 #include "config/Config.h"
 #include "Console.h"
 
@@ -209,7 +209,7 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 
 bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg, const Permission &permission)
 {
-	HttpServer *http_server = new HttpServer();
+	HttpClient *http_server = new HttpClient();
 	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q="+args+"s&APPID="+Config::key;
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
@@ -254,7 +254,7 @@ bool CommandHandler::handle_command_vdm(const std::string &args, std::string &ms
 bool CommandHandler::handle_command_chuck_norris(const std::string &args, std::string &msg,
 												 const Permission &permission)
 {
-	HttpServer *http_server = new HttpServer();
+	HttpClient *http_server = new HttpClient();
 	const std::string url = "http://api.icndb.com/jokes/random";
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
@@ -269,7 +269,7 @@ bool CommandHandler::handle_command_chuck_norris(const std::string &args, std::s
 bool CommandHandler::handle_command_joke(const std::string &args, std::string &msg,
 												 const Permission &permission)
 {
-	HttpServer *http_server = new HttpServer();
+	HttpClient *http_server = new HttpClient();
 	const std::string url = "http://webknox.com/api/jokes/random?apiKey=bejebgdahjzmcxjyxbkpmbmbvtttidu";
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
@@ -283,7 +283,7 @@ bool CommandHandler::handle_command_joke(const std::string &args, std::string &m
 bool CommandHandler::handle_command_quote(const std::string &args, std::string &msg,
 												 const Permission &permission)
 {
-	HttpServer *http_server = new HttpServer();
+	HttpClient *http_server = new HttpClient();
 	// Key default  A CHANGER
 	const std::string url = "http://q.uote.me/api.php?p=json&l=1&s=random";
 	Json::Value json_value;

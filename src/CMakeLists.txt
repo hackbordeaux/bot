@@ -13,7 +13,7 @@ set(SOURCE_FILES
         IRCThread.cpp
         CommandHandler.cpp
         Console.cpp
-        HttpServer.cpp
+        HttpClient.cpp
         config/Config.cpp)
 set(PROJECT_LIBS
         ircclient

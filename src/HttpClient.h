@@ -32,10 +32,10 @@ class IRCThread;
 
 typedef std::function<void(int)> FunctionCallback;
 
-class HttpServer {
+class HttpClient {
 public:
-	//HttpServer(IRCThread *irc_thread);
-	HttpServer() {};
+	//HttpClient(IRCThread *irc_thread);
+	HttpClient() {};
 	bool get_json(Json::Value &json_value, const std::string &url);
 	bool is_running() const { return running; };
 

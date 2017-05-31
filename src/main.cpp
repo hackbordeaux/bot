@@ -26,7 +26,7 @@
 #include <iostream>
 #include "IRCThread.h"
 #include "Console.h"
-#include "HttpServer.h"
+#include "HttpClient.h"
 #include <cstring>
 #include <thread>
 
