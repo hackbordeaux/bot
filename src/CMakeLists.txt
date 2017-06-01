@@ -1,3 +1,5 @@
+include_directories(../lib/WinterWind/include)
+
 include_directories(
         /usr/include/libircclient
         /usr/local/include/libircclient
@@ -14,6 +16,7 @@ set(SOURCE_FILES
         CommandHandler.cpp
         Console.cpp
         HttpClient.cpp
+        Config.cpp
         config/Config.cpp)
 set(PROJECT_LIBS
         ircclient
