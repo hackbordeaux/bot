@@ -150,3 +150,36 @@ bool Config::load_configuration()
 		return false;
 	}
 }
+
+const std::vector<std::string> Config::get_irc_channels() const
+{
+	std::vector<std::string> res = {};
+	for (const auto &channel: m_irc_channel_configs) {
+		res.push_back(channel.first);
+	}
+	return res;
+}
+
+const std::string Config::get_channel_gitlab_project_name(
+		const std::string &channel) const
+{
+	for (const auto &c: m_irc_channel_configs) {
+		if (channel.compare(c.first) == 0) {
+			return c.second->gitlab_project_name;
+		}
+	}
+
+	return "";
+}
+
+const std::string Config::get_channel_gitlab_project_namespace(
+		const std::string &channel) const
+{
+	for (const auto &c: m_irc_channel_configs) {
+		if (channel.compare(c.first) == 0) {
+			return c.second->gitlab_project_namespace;
+		}
+	}
+
+	return "";
+}

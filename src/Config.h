@@ -52,119 +52,119 @@ public:
 		return m_httpd_enabled;
 	}
 
-	void set_httpd_enabled(bool m_httpd_enabled)
+	void set_httpd_enabled(bool httpd_enabled)
 	{
-		Config::m_httpd_enabled = m_httpd_enabled;
+		m_httpd_enabled = httpd_enabled;
 	}
 
-	uint16_t getM_httpd_port() const
+	uint16_t get_httpd_port() const
 	{
 		return m_httpd_port;
 	}
 
-	void set_httpd_port(uint16_t m_httpd_port)
+	void set_httpd_port(uint16_t httpd_port)
 	{
-		Config::m_httpd_port = m_httpd_port;
+		m_httpd_port = httpd_port;
 	}
 
-	const std::string &getM_irc_name() const
+	const std::string &get_irc_name() const
 	{
 		return m_irc_name;
 	}
 
-	void set_irc_name(const std::string &m_irc_name)
+	void set_irc_name(const std::string &irc_name)
 	{
-		Config::m_irc_name = m_irc_name;
+		m_irc_name = irc_name;
 	}
 
-	const std::string &getM_irc_password() const
+	const std::string &get_irc_password() const
 	{
 		return m_irc_password;
 	}
 
-	void set_irc_password(const std::string &m_irc_password)
+	void set_irc_password(const std::string &irc_password)
 	{
-		Config::m_irc_password = m_irc_password;
+		m_irc_password = irc_password;
 	}
 
-	const std::string &getM_irc_server() const
+	const std::string &get_irc_server() const
 	{
 		return m_irc_server;
 	}
 
-	void set_irc_server(const std::string &m_irc_server)
+	void set_irc_server(const std::string &irc_server)
 	{
-		Config::m_irc_server = m_irc_server;
+		m_irc_server = irc_server;
 	}
 
-	bool isM_irc_enabled() const
+	bool is_irc_enabled() const
 	{
 		return m_irc_enabled;
 	}
 
-	void set_irc_enabled(bool m_irc_enabled)
+	void set_irc_enabled(bool irc_enabled)
 	{
-		Config::m_irc_enabled = m_irc_enabled;
+		m_irc_enabled = irc_enabled;
 	}
 
-	uint16_t getM_irc_port() const
+	uint16_t get_irc_port() const
 	{
 		return m_irc_port;
 	}
 
-	void set_irc_port(uint16_t m_irc_port)
+	void set_irc_port(uint16_t irc_port)
 	{
-		Config::m_irc_port = m_irc_port;
+		m_irc_port = irc_port;
 	}
 
-	const IRCChannelConfigs &getM_irc_channel_configs() const
+	const IRCChannelConfigs &get_irc_channel_configs() const
 	{
 		return m_irc_channel_configs;
 	}
 
-	void set_irc_channel_configs(const IRCChannelConfigs &m_irc_channel_configs)
+	void set_irc_channel_configs(const IRCChannelConfigs &irc_channel_configs)
 	{
-		Config::m_irc_channel_configs = m_irc_channel_configs;
+		m_irc_channel_configs = irc_channel_configs;
 	}
 
-	uint32_t getM_max_http_response_size() const
+	uint32_t get_max_http_response_size() const
 	{
 		return m_max_http_response_size;
 	}
 
-	void set_max_http_response_size(uint32_t m_max_http_response_size)
+	void set_max_http_response_size(uint32_t max_http_response_size)
 	{
-		Config::m_max_http_response_size = m_max_http_response_size;
+		m_max_http_response_size = max_http_response_size;
 	}
 
-	const std::string &getM_openweathermap_api_key() const
+	const std::string &get_openweathermap_api_key() const
 	{
 		return m_openweathermap_api_key;
 	}
 
-	void set_openweathermap_api_key(const std::string &m_openweathermap_api_key)
+	void set_openweathermap_api_key(const std::string &openweathermap_api_key)
 	{
-		Config::m_openweathermap_api_key = m_openweathermap_api_key;
+		m_openweathermap_api_key = openweathermap_api_key;
 	}
 
-	const std::string &getM_gitlab_api_key() const
+	const std::string &get_gitlab_api_key() const
 	{
 		return m_gitlab_api_key;
 	}
 
-	void set_gitlab_api_key(const std::string &m_gitlab_api_key)
+	void set_gitlab_api_key(const std::string &gitlab_api_key)
 	{
-		Config::m_gitlab_api_key = m_gitlab_api_key;
+		m_gitlab_api_key = gitlab_api_key;
 	}
 
-	const std::string &getM_gitlab_uri() const
+	const std::string &get_gitlab_uri() const
 	{
 		return m_gitlab_uri;
 	}
 
-	void set_gitlab_uri(const std::string &m_gitlab_uri)
+	void set_gitlab_uri(const std::string &gitlab_uri)
 	{
-		Config::m_gitlab_uri = m_gitlab_uri;
+		m_gitlab_uri = gitlab_uri;
 	}
 
 	const std::string &getTwitter_consumer_key() const
@@ -174,7 +174,7 @@ public:
 
 	void setTwitter_consumer_key(const std::string &twitter_consumer_key)
 	{
-		Config::m_twitter_consumer_key = twitter_consumer_key;
+		m_twitter_consumer_key = twitter_consumer_key;
 	}
 
 	const std::string &getTwitter_consumer_secret() const
@@ -184,7 +184,7 @@ public:
 
 	void setTwitter_consumer_secret(const std::string &twitter_consumer_secret)
 	{
-		Config::m_twitter_consumer_secret = twitter_consumer_secret;
+		m_twitter_consumer_secret = twitter_consumer_secret;
 	}
 
 	const std::string &getTwitter_access_token() const
@@ -194,7 +194,7 @@ public:
 
 	void setTwitter_access_token(const std::string &twitter_access_token)
 	{
-		Config::m_twitter_access_token = twitter_access_token;
+		m_twitter_access_token = twitter_access_token;
 	}
 
 	const std::string &getTwitter_access_token_secret() const
@@ -204,7 +204,7 @@ public:
 
 	void setTwitter_access_token_secret(const std::string &twitter_access_token_secret)
 	{
-		Config::m_twitter_access_token_secret = twitter_access_token_secret;
+		m_twitter_access_token_secret = twitter_access_token_secret;
 	}
 
 private:
