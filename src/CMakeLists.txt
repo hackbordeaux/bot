@@ -20,6 +20,7 @@ set(SOURCE_FILES
         config/Config.cpp)
 set(PROJECT_LIBS
         ircclient
+        yaml-cpp
         )
 
 if (ENABLE_UNITTESTS)

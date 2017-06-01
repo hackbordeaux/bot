@@ -169,42 +169,42 @@ public:
 
 	const std::string &getTwitter_consumer_key() const
 	{
-		return twitter_consumer_key;
+		return m_twitter_consumer_key;
 	}
 
 	void setTwitter_consumer_key(const std::string &twitter_consumer_key)
 	{
-		Config::twitter_consumer_key = twitter_consumer_key;
+		Config::m_twitter_consumer_key = twitter_consumer_key;
 	}
 
 	const std::string &getTwitter_consumer_secret() const
 	{
-		return twitter_consumer_secret;
+		return m_twitter_consumer_secret;
 	}
 
 	void setTwitter_consumer_secret(const std::string &twitter_consumer_secret)
 	{
-		Config::twitter_consumer_secret = twitter_consumer_secret;
+		Config::m_twitter_consumer_secret = twitter_consumer_secret;
 	}
 
 	const std::string &getTwitter_access_token() const
 	{
-		return twitter_access_token;
+		return m_twitter_access_token;
 	}
 
 	void setTwitter_access_token(const std::string &twitter_access_token)
 	{
-		Config::twitter_access_token = twitter_access_token;
+		Config::m_twitter_access_token = twitter_access_token;
 	}
 
 	const std::string &getTwitter_access_token_secret() const
 	{
-		return twitter_access_token_secret;
+		return m_twitter_access_token_secret;
 	}
 
 	void setTwitter_access_token_secret(const std::string &twitter_access_token_secret)
 	{
-		Config::twitter_access_token_secret = twitter_access_token_secret;
+		Config::m_twitter_access_token_secret = twitter_access_token_secret;
 	}
 
 private:
@@ -220,15 +220,18 @@ private:
 	std::string m_openweathermap_api_key = "";
 	std::string m_gitlab_api_key = "";
 	std::string m_gitlab_uri = "";
+
+	std::string m_log_config_file = "log4cpp.properties";
 	/*
 	std::string m_redis_host = "localhost";
 	uint16_t m_redis_port = 6379;
 	 */
 
-	std::string twitter_consumer_key = "";
-	std::string twitter_consumer_secret = "";
-	std::string twitter_access_token = "";
-	std::string twitter_access_token_secret = "";
+	bool m_twitter_enable = false;
+	std::string m_twitter_consumer_key = "";
+	std::string m_twitter_consumer_secret = "";
+	std::string m_twitter_access_token = "";
+	std::string m_twitter_access_token_secret = "";
 
 
 	const std::vector<std::string> get_irc_channels() const;
