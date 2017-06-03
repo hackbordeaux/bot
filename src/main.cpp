@@ -27,24 +27,29 @@
 #include "IRCThread.h"
 #include "Console.h"
 #include "HttpClient.h"
+#include "Config.h"
 #include <cstring>
 #include <thread>
 
 int main (int argc, char **argv)
 {
-	if ( argc != 4 )
-	{
-		std::cout << "Usage : " << argv[0] << " <server> <nick> <chanel>" << std::endl;
+	Config *cfg = new Config();
+	if (!cfg->load_configuration()) {
 		return 1;
 	}
 
-	IRCThread *irc_thread = new IRCThread(argv[3], argv[2]);
-	std::thread irc([irc_thread, argv] {
-		irc_thread->run(argv[1], 6667);
-	});
+	IRCThread *irc_thread = nullptr;
+	std::thread irc;
+
+	if (cfg->is_irc_enabled()) {
+		irc_thread = new IRCThread(cfg);
+		irc = std::thread([irc_thread, cfg] {
+			irc_thread->run(cfg);
+		});
+	}
 
 	Console *console = new Console(irc_thread);
-	std::thread co([console] { console->run(); });
+	std::thread co([console, cfg] { console->run(cfg); });
 
 	while(console->is_running()) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
@@ -52,6 +57,8 @@ int main (int argc, char **argv)
 
 	co.detach();
 	irc.detach();
+
+	delete cfg;
 
 	return 1;
 }

@@ -29,6 +29,8 @@
 #include <libirc_events.h>
 #include <iostream>
 
+class Config;
+
 struct irc_info_session {
 	std::string channel;
 	std::string nick;
@@ -39,9 +41,9 @@ struct irc_info_session {
 
 class IRCThread {
 public:
-	IRCThread(const std::string channel, const std::string nick);
+	IRCThread(const Config *cfg);
 	~IRCThread();
-	void run(const char *server, unsigned short port);
+	void run(const Config *cfg);
 	void connect(irc_callbacks_t callbacks, const char *server, unsigned short port);
 
 	void add_text(const std::string &text);
@@ -52,6 +54,7 @@ private:
 	static void event_numeric(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 	static void event_channel(irc_session_t *session, const char *event, const char *origin, const char **params, unsigned int count);
 
+	static const Config *s_cfg;
 	static irc_info_session s_iis;
 	bool m_run = true;
 	irc_session_t *m_irc_session = nullptr;

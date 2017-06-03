@@ -30,7 +30,7 @@
 class Console {
 public:
 	Console(IRCThread *irc_thread);
-	void run();
+	void run(const Config *cfg);
 	static bool is_running() { return s_is_running; };
 	static void stop();
 

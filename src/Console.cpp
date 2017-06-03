@@ -34,11 +34,11 @@ Console::Console(IRCThread *irc_thread) : m_irc_thread(irc_thread)
 	that = this;
 }
 
-void Console::run()
+void Console::run(const Config *cfg)
 {
 	std::cout << "Console run." << std::endl;
 	std::string cmd;
-	CommandHandler *command_handler = new CommandHandler(m_irc_thread);
+	CommandHandler *command_handler = new CommandHandler(m_irc_thread, cfg);
 	std::string msg = "";
 
 	while(getline(std::cin, cmd)) {

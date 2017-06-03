@@ -67,7 +67,6 @@ bool Config::load_configuration()
 		std::cerr << "Invalid configuration: log_file path is empty!" << std::endl;
 		return false;
 	}
-
 	YAML::Node http_config = config["http"].as<YAML::Node>();
 	YAML::Node irc_config = config["irc"].as<YAML::Node>();
 	YAML::Node openweathermap_config = config["openweathermap"].as<YAML::Node>();
@@ -142,6 +141,8 @@ bool Config::load_configuration()
 		CFG_LOAD(twitter_config, "consumer_secret", std::string, m_twitter_access_token_secret);
 		CFG_LOAD(twitter_config, "access_token", std::string, m_twitter_access_token);
 		CFG_LOAD(twitter_config, "access_token_secret", std::string, m_twitter_access_token_secret);
+		/*
+		*/
 
 	}
 	catch (std::exception &e) {
@@ -149,6 +150,7 @@ bool Config::load_configuration()
 				  << std::endl << "Error was: " << e.what() << std::endl;
 		return false;
 	}
+	return true;
 }
 
 const std::vector<std::string> Config::get_irc_channels() const

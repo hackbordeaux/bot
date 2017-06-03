@@ -17,7 +17,7 @@ set(SOURCE_FILES
         Console.cpp
         HttpClient.cpp
         Config.cpp
-        config/Config.cpp)
+        )
 set(PROJECT_LIBS
         ircclient
         yaml-cpp

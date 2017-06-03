@@ -28,6 +28,7 @@
 
 class IRCThread;
 class CommandHandler;
+class Config;
 
 enum Permission : uint8_t
 {
@@ -53,7 +54,7 @@ enum ChatCommandSearchResult : uint8_t
 
 class CommandHandler {
 public:
-	CommandHandler(IRCThread *irc_thread) : m_irc_thread(irc_thread) {};
+	CommandHandler(IRCThread *irc_thread, const Config *cfg) : m_irc_thread(irc_thread), m_cfg(cfg) {};
 	~CommandHandler() {};
 	bool handle_command(const std::string &text, std::string &msg, const Permission &permission);
 
@@ -74,5 +75,6 @@ public:
 	bool handle_command_quote(const std::string &args, std::string &msg, const Permission &permission);
 
 	IRCThread *m_irc_thread = nullptr;
+	const Config *m_cfg = nullptr;
 };
 

@@ -26,24 +26,26 @@
 #include <cstring>
 #include "IRCThread.h"
 #include "CommandHandler.h"
-
+#include "Config.h"
 
 std::string IRCThread::s_bot_name = "mybot_new";
 irc_info_session IRCThread::s_iis = irc_info_session("server", "nick");
 IRCThread *IRCThread::that = nullptr;
+const Config *IRCThread::s_cfg = nullptr;
 
-IRCThread::IRCThread(const std::string channel, const std::string nick)
+IRCThread::IRCThread(const Config *cfg)
 {
-	s_iis.channel = channel;
-	s_iis.nick = nick;
+	s_iis.channel = cfg->get_irc_channel_configs().begin()->first;
+	s_iis.nick = cfg->get_irc_name();
 	that = this;
+	s_cfg = cfg;
 }
 
 IRCThread::~IRCThread()
 {
 	delete that;
 }
-void IRCThread::run(const char *server, unsigned short port)
+void IRCThread::run(const Config *cfg)
 {
 	irc_callbacks_t callbacks = { 0 };
 	irc_session_t *s;
@@ -55,7 +57,7 @@ void IRCThread::run(const char *server, unsigned short port)
 	//std::thread co(IRCThread::connect(callbacks, server, port), this);
 	// Ne sert à rien
 	//std::thread thread_connect([this, callbacks, server, port] { this->connect(callbacks, server, port); });
-	connect(callbacks, server, port);
+	connect(callbacks, cfg->get_irc_server().c_str(), cfg->get_irc_port());
 }
 
 void IRCThread::connect(irc_callbacks_t callbacks, const char *server, unsigned short port)
@@ -149,7 +151,7 @@ void IRCThread::event_channel(irc_session_t *session, const char *event, const c
 	std::cout << "Event channel : " << params[0] << " : " << params[1] << std::endl;
 
 	if (params[1][0] == '.') {
-		CommandHandler *command_handler = new CommandHandler(that);
+		CommandHandler *command_handler = new CommandHandler(that, s_cfg);
 		std::string msg = "";
 		bool res = command_handler->handle_command(params[1], msg, Permission::USER);
 

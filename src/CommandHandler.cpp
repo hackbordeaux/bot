@@ -29,8 +29,8 @@
 #include "CommandHandler.h"
 #include "IRCThread.h"
 #include "HttpClient.h"
-#include "config/Config.h"
 #include "Console.h"
+#include "Config.h"
 
 static const ChatCommand COMMANDHANDLERFINISHER = {nullptr, nullptr, nullptr, ""};
 
@@ -210,7 +210,7 @@ bool CommandHandler::handle_command_help(const std::string &args, std::string &m
 bool CommandHandler::handle_command_weather(const std::string &args, std::string &msg, const Permission &permission)
 {
 	HttpClient *http_server = new HttpClient();
-	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q="+args+"s&APPID="+Config::key;
+	const std::string url = "http://api.openweathermap.org/data/2.5/weather?q="+args+"s&APPID="+m_cfg->get_openweathermap_api_key();
 	Json::Value json_value;
 	std::thread http([http_server, url, &json_value] { http_server->get_json(json_value, url); });
 	while (http_server->is_running()) {
